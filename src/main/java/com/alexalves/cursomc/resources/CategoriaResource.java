@@ -1,6 +1,7 @@
 package com.alexalves.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,12 @@ public class CategoriaResource {
 		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<?> find() {
+		List<Categoria> obj = service.find();
+		return ResponseEntity.ok().body(obj);
+	}
 
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
@@ -40,6 +47,13 @@ public class CategoriaResource {
 		obj.setId(id);
 		obj = service.update(obj);
 		
+		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> remove(@PathVariable Integer id) {
+		service.remove(id);
+
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -1,12 +1,15 @@
 package com.alexalves.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.alexalves.cursomc.domain.Categoria;
 import com.alexalves.cursomc.repositories.CategoriaRepository;
+import com.alexalves.cursomc.services.exceptions.DataIntegrityException;
 import com.alexalves.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -15,6 +18,11 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository repo;
 
+	public List<Categoria> find() {
+		List<Categoria> obj = repo.findAll();
+		return obj;
+	}
+	
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -31,5 +39,14 @@ public class CategoriaService {
 		return repo.save(obj);
 	}
 
+	public void remove(Integer id) {
+		find(id);
+
+		try {
+			repo.deleteById(id);			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos.");
+		}
+	}
 
 }
