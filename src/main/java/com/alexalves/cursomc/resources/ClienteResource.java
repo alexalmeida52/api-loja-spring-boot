@@ -1,13 +1,20 @@
 package com.alexalves.cursomc.resources;
 
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.alexalves.cursomc.domain.Cliente;
+import com.alexalves.cursomc.dto.ClienteDTO;
 import com.alexalves.cursomc.services.ClienteService;
 
 @RestController
@@ -21,4 +28,41 @@ public class ClienteResource {
         Cliente obj = service.find(id);
         return ResponseEntity.ok().body(obj);
     }
+
+    
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<ClienteDTO>> find() {
+        List<Cliente> list = service.find();
+
+        List<ClienteDTO> listDTO = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listDTO);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> insert(@RequestBody Cliente obj) {
+        obj = service.insert(obj);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("/{id}").buildAndExpand(obj.getId()).toUri();
+        
+        return ResponseEntity.created(uri).build();
+    }
+    
+    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
+    public ResponseEntity<Void> update(@PathVariable Integer id, @RequestBody Cliente obj) {
+    	obj.setId(id);
+    	service.update(obj);
+    	
+    	return ResponseEntity.noContent().build();
+    }
+    
+    
+    @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+    public ResponseEntity<Void> update(@PathVariable Integer id) {
+    	service.remove(id);
+    	
+    	return ResponseEntity.noContent().build();
+    }
+    
 }
