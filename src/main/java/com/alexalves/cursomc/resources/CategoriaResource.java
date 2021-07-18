@@ -28,6 +28,7 @@ public class CategoriaResource {
 	@Autowired
 	private CategoriaService service;
 	
+	// LIST ALL
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> find() {
 		List<Categoria> list = service.find();
@@ -36,37 +37,14 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 
+	// LIST ONE
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
-		Categoria obj = service.fromDTO(objDTO);
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-			.path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
-	}
-	
-	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody CategoriaDTO objDTO) {
-		Categoria obj = service.fromDTO(objDTO);
-		obj.setId(id);
-		service.update(obj);
-		
-		return ResponseEntity.noContent().build();
-	}
-
-	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> remove(@PathVariable Integer id) {
-		service.remove(id);
-
-		return ResponseEntity.noContent().build();
-	}
-
+	// LIST PER PAGE
 	@RequestMapping(value="/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<CategoriaDTO>> findPerPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -78,5 +56,33 @@ public class CategoriaResource {
 		Page<CategoriaDTO> listDTO = list.map(obj -> new CategoriaDTO(obj));
 
 		return ResponseEntity.ok().body(listDTO);
+	}
+
+	// INSERT
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
+		Categoria obj = service.fromDTO(objDTO);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+			.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+	
+	// UPDATE
+	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody CategoriaDTO objDTO) {
+		Categoria obj = service.fromDTO(objDTO);
+		obj.setId(id);
+		service.update(obj);
+		
+		return ResponseEntity.noContent().build();
+	}
+
+	// REMOVE
+	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> remove(@PathVariable Integer id) {
+		service.remove(id);
+
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -22,42 +22,49 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository repo;
 
-	public List<Categoria> find() {
-		return repo.findAll();
-	}
-	
-	public Categoria find(Integer id) {
-		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
+	// LIST ALL
+    public List<Categoria> find() {
+        return repo.findAll();
+    }
+
+    // LIST ONE
+    public Categoria find(Integer id) {
+        Optional<Categoria> obj = repo.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
-	}
+    }
 
-	public Categoria insert(Categoria obj) {
-		obj.setId(null);
-		return repo.save(obj);
-	}
-	
-	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return repo.save(obj);
-	}
-
-	public void remove(Integer id) {
-		find(id);
-
-		try {
-			repo.deleteById(id);			
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos.");
-		}
-	}
-
-	public Page<Categoria> findPerPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    // LIST PER PAGE
+    public Page<Categoria> findPerPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 	}
 
-	public Categoria fromDTO(CategoriaDTO objDTO) {
+    // INSERT
+    public Categoria insert(Categoria obj) {
+        obj.setId(null);
+        return repo.save(obj);
+    }
+    
+    // UPDATE
+    public Categoria update(Categoria obj) {
+    	find(obj.getId());
+    	return repo.save(obj);
+    }
+    
+    // REMOVE
+    public void remove(Integer id) {
+    	find(id);
+    	
+    	try {
+    		repo.deleteById(id);    		
+    	} catch (DataIntegrityViolationException e) {
+    		throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos.");
+    	}
+    }
+
+    // DTO -> DOMAIN
+    public Categoria fromDTO(CategoriaDTO objDTO) {
 		return new Categoria(objDTO.getId(), objDTO.getNome());
 	}
 
