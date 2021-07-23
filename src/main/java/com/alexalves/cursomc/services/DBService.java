@@ -115,8 +115,8 @@ public class DBService {
 		
 		Cliente cli1 = new Cliente(
 				null,
-				"Maria Silva",
-				"maria@gmail.com",
+				"José De Almeida Pereira",
+				"josedalmeida52@gmail.com",
 				"36378912377",
 				TipoCliente.PESSOAFISICA
 		);
