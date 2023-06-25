@@ -22,7 +22,7 @@ jobs:
           username: alx52
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: alx52/api-loja-spring-boot
-          tags: cat target/version, latest
+          tags: ${{cat target/version}}, latest
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
