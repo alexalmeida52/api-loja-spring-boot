@@ -42,8 +42,7 @@ jobs:
 
       - name: update k8s
         run: |
-          echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-          kustomize edit set image portfolio=alx52/api-loja-spring-boot:${{env.RELEASE_VERSION}}
+          kustomize edit set image portfolio=alx52/api-loja-spring-boot:0.0.4
 
       - name: commit
         run: |
