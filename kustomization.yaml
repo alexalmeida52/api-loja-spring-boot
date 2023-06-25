@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yaml
+- service.yaml
+
+namespace: loja-spring-boot
+
+images:
+- name: loja-spring-boot
+  newName: alx52/loja-spring-boot
+  newTag: 1.0.0
