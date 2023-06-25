@@ -8,5 +8,5 @@ namespace: loja-spring-boot
 
 images:
 - name: loja-spring-boot
-  newName: alx52/loja-spring-boot
-  newTag: 1.0.0
+  newName: alx52/api-loja-spring-boot
+  newTag: latest
