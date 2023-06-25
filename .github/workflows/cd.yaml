@@ -42,7 +42,7 @@ jobs:
 
       - name: update k8s
         run: |
-          kustomize edit set image portfolio=alx52/api-loja-spring-boot:${{ steps.package-version.outputs.current-version }}
+          kustomize edit set image portfolio=alx52/api-loja-spring-boot:${{env.RELEASE_VERSION}}
 
       - name: commit
         run: |
