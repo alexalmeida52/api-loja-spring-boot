@@ -15,7 +15,8 @@ jobs:
           distribution: 'temurin'
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots package
-      - name: Set Release version env variable
+      - id: app-version
+        name: Set Release version env variable
         run: |
           echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
         
@@ -35,18 +36,19 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
+      - id: app-version
+        name: Set Release version env variable
+        run: |
+          echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
       - name: kustomize
         uses: imranismail/setup-kustomize@v1
         with:
           kustomize_version: v3.6.1
 
-      - name: Set Release version env variable
-        run: |
-          echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-
       - name: update k8s
         run: |
-          kustomize edit set image portfolio=alx52/api-loja-spring-boot:${{env.RELEASE_VERSION}}
+          echo "$(kustomize edit set image loja-spring-boot=alx52/api-loja-spring-boot:$RELEASE_VERSION)"
 
       - name: commit
         run: |
