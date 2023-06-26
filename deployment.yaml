@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: loja-spring-boot
-        image: alx52/api-loja-spring-boot
+        image: alx52/api-loja-spring-boot:0.0.5
         ports:
         - containerPort: 8080
 
