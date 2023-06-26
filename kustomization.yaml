@@ -12,3 +12,4 @@ images:
   newTag: latest
 - name: portfolio
   newName: alx52/api-loja-spring-boot
+  newTag: 0.0.4
