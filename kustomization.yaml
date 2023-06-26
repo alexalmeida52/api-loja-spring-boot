@@ -10,6 +10,3 @@ images:
 - name: loja-spring-boot
   newName: alx52/api-loja-spring-boot
   newTag: 0.0.4
-- name: portfolio
-  newName: alx52/api-loja-spring-boot
-  newTag: 0.0.4
