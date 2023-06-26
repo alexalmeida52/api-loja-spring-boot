@@ -7,9 +7,6 @@ resources:
 namespace: loja-spring-boot
 
 images:
-- name: api-loja-spring-boot
-  newName: alx52/api-loja-spring-boot
-  newTag: 1.0.0
 - name: loja-spring-boot
   newName: alx52/api-loja-spring-boot
   newTag: 1.0.0
